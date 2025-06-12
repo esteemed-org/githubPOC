@@ -1,0 +1,39 @@
+name: A Build
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'A/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'A/**'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore githubPOC/githubPOC.csproj
+
+    - name: Build
+      run: dotnet build githubPOC/githubPOC.csproj --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish githubPOC/githubPOC.csproj --configuration Release --output ./publish --no-build
+
+    - name: Upload published files
+      uses: actions/upload-artifact@v4
+      with:
+        name: published-app-A
+        path: ./publish

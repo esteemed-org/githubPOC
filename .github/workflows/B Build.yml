@@ -1,10 +1,14 @@
-name: .NET 8 Console Build
+name: B Build
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'B/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'B/**'
 
 jobs:
   build:
@@ -31,5 +35,5 @@ jobs:
     - name: Upload published files
       uses: actions/upload-artifact@v4
       with:
-        name: published-app
+        name: published-app-B
         path: ./publish
